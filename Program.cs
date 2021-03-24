@@ -13,18 +13,26 @@ namespace MediaLibrary
         {
             logger.Info("Program started");
 
-            string scrubbedFile = FileScrubber.ScrubMovies("movies.csv");
-            MovieFile movieFile = new MovieFile(scrubbedFile);
+            Console.Write("\nWould you like to search for a movie (Y/N): ");
+            string decision = Console.ReadLine().ToUpper();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            Console.Write("What would you like to search for in the movie titles: ");
-            string searchedTitle = Console.ReadLine();
-            var searchedMovie = movieFile.Movies.Where(m => m.title.Contains(searchedTitle));
-            Console.WriteLine($"\n**There are {searchedMovie.Count()} movies that contain {searchedTitle} in the title**\n");
-            foreach(Movie movie in searchedMovie)
+            while(decision == "Y")
             {
-                Console.WriteLine(movie.title);
+                string scrubbedFile = FileScrubber.ScrubMovies("movies.csv");
+                MovieFile movieFile = new MovieFile(scrubbedFile);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+
+                Console.Write("\nWhat would you like to search for in the movie titles: ");
+                string searchedTitle = Console.ReadLine();
+                var searchedMovie = movieFile.Movies.Where(m => m.title.Contains(searchedTitle));
+                Console.WriteLine($"\n**There are {searchedMovie.Count()} movies that contain {searchedTitle} in the title**\n");
+                foreach(Movie movie in searchedMovie)
+                {
+                    Console.WriteLine(movie.title);
+                }
+                Console.Write("\nWould you like to search for another movie? (Y/N): ");
+                decision = Console.ReadLine().ToUpper();
             }
 
             // // LINQ - Where filter operator & Contains quantifier operator
